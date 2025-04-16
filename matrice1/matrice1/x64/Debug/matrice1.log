@@ -1,3 +1,6 @@
 ﻿  matrice1.cpp
-C:\Users\annbe\Desktop\калькулятор\matrice1\matrice1\matrice1.cpp(173,1): warning C4715: Opredelitel: значение возвращается не при всех путях выполнения
+C:\Users\annbe\Desktop\калькулятор\matrice1\matrice1\matrice1.cpp(170,22): warning C4244: return: преобразование "double" в "int", возможна потеря данных
+C:\Users\annbe\Desktop\калькулятор\matrice1\matrice1\matrice1.cpp(173,40): warning C4244: return: преобразование "double" в "int", возможна потеря данных
+C:\Users\annbe\Desktop\калькулятор\matrice1\matrice1\matrice1.cpp(178,4): warning C4244: return: преобразование "double" в "int", возможна потеря данных
+C:\Users\annbe\Desktop\калькулятор\matrice1\matrice1\matrice1.cpp(180,1): warning C4715: Opredelitel: значение возвращается не при всех путях выполнения
   matrice1.vcxproj -> C:\Users\annbe\Desktop\калькулятор\matrice1\x64\Debug\matrice1.exe
