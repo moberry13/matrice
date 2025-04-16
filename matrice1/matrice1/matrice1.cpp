@@ -1,7 +1,12 @@
 ﻿#include"matrice.h"
+#include<iostream>
+#include<locale>
+#include <limits>
+#include <string>
+
 
 void matriceMenu() {
-	cout << "\nМатричный калькулятор: \n";
+	cout << "Матричный калькулятор: \n";
 	cout << "Функции: \n";
 	cout << "0. Выход в меню\n";
 	cout << "1. Сложение матриц\n";
@@ -16,9 +21,10 @@ void matriceMenu() {
 	cout << "Выберите номер действия: ";
 }
 
+
 int GetChoice() {
 	int choice;
-	while (!(cin >> choice) || (choice < 1 || choice > 10)) {
+	while (!(cin >> choice) || (choice < 0 || choice > 10)) {
 		cout << "Неправильный ввод";
 		cin.clear();
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -26,7 +32,16 @@ int GetChoice() {
 	return choice;
 }
 
-void OutputMatrice(int stroki, int stolbcy, int matrice[100][100]) {
+void ShabloMatrice(int stroki, int stolbcy) {
+	for (int i = 0; i < stroki; i++) {
+		for (int j = 0; j < stolbcy; j++) {
+			cout << "a" << i + 1 << j + 1 << "\t";
+		}
+		cout << endl;
+	}
+}
+
+void OutputMatrice(int stroki, int stolbcy, int matrice[MAX_SIZE][MAX_SIZE]) {
 	for (int i = 0; i < stroki; i++) {
 		for (int j = 0; j < stolbcy; j++) {
 			cout << matrice[i][j] << "\t";
@@ -35,24 +50,33 @@ void OutputMatrice(int stroki, int stolbcy, int matrice[100][100]) {
 	}
 }
 
+void InputSingleMatrice(int stroki, int stolbcy, int matrice[MAX_SIZE][MAX_SIZE]) {
+	ShabloMatrice(stroki, stolbcy);
 
-void InputSingleMatrice(int stroki, int stolbcy, int matrice[100][100]) {
 	cout << "Введите элементы матрицы " << stroki << "x" << stolbcy << ":\n";
+
 	for (int i = 0; i < stroki; i++) {
 		for (int j = 0; j < stolbcy; j++) {
-			cout << "a" << i + 1 << j + 1 << " = ";
-			int temp;
-			while (!(cin >> temp) || temp <= 0) {
-				cout << "Ошибка ввода. Введите положительное число: a" << i + 1 << j + 1 << " = ";
+			while (true) {
+				cout << "a" << i + 1 << j + 1 << " = ";
+				cin >> matrice[i][j];
+
+				if (!cin.fail()&& stroki > 0 ) break;
+
+				cout << "Значение должно быть числом.\n";
 				cin.clear();
 				cin.ignore(numeric_limits<streamsize>::max(), '\n');
 			}
-			matrice[i][j] = temp;
 		}
 	}
+	cout << "Введенная матрица\n";
+	OutputMatrice(stroki, stolbcy, matrice);
 }
 
-void InputTwoMatrice(int stroki1, int stolbcy1, int matrice1[100][100], int stroki2, int stolbcy2, int matrice2[100][100]) {
+
+
+
+void InputTwoMatrice(int stroki1, int stolbcy1, int matrice1[MAX_SIZE][MAX_SIZE], int stroki2, int stolbcy2, int matrice2[MAX_SIZE][MAX_SIZE]) {
 	cout << "Введите элементы первой матрицы " << stroki1 << "x" << stolbcy1 << ":\n";
 	InputSingleMatrice(stroki1, stolbcy1, matrice1);
 
@@ -60,7 +84,7 @@ void InputTwoMatrice(int stroki1, int stolbcy1, int matrice1[100][100], int stro
 	InputSingleMatrice(stroki2, stolbcy2, matrice2);
 }
 
-void InputMatriceAndNumber(int stroki, int stolbcy, int matrice[100][100], int& chislo) {
+void InputMatriceAndNumber(int stroki, int stolbcy, int matrice[MAX_SIZE][MAX_SIZE], int& chislo) {
 	cout << "Введите элементы матрицы " << stroki << "x" << stolbcy << ":\n";
 	InputSingleMatrice(stroki, stolbcy, matrice);
 
@@ -72,7 +96,7 @@ void InputMatriceAndNumber(int stroki, int stolbcy, int matrice[100][100], int& 
 	}
 }
 
-void PlusMatrice(int stroki, int stolbcy, int matrice1[100][100],int matrice2[100][100],int result[100][100]) {
+void PlusMatrice(int stroki, int stolbcy, int matrice1[MAX_SIZE][MAX_SIZE],int matrice2[MAX_SIZE][MAX_SIZE],int result[MAX_SIZE][MAX_SIZE]) {
 	for (int i = 0; i < stroki; i++) {
 		for (int j = 0; j < stolbcy; j++) {
 			result[i][j] = matrice1[i][j] + matrice2[i][j];
@@ -81,16 +105,16 @@ void PlusMatrice(int stroki, int stolbcy, int matrice1[100][100],int matrice2[10
 }
 
 
-void MinusMatrice(int stroki, int stolbcy, int matrice1[100][100],int matrice2[100][100],int result[100][100]) {
+void MinusMatrice(int stroki, int stolbcy, int matrice1[MAX_SIZE][MAX_SIZE],int matrice2[MAX_SIZE][MAX_SIZE],int result[MAX_SIZE][MAX_SIZE]) {
 	for (int i = 0; i < stroki; i++) {
 		for (int j = 0; j < stolbcy; j++) {
 			result[i][j] = matrice1[i][j] - matrice2[i][j];
 		}
 	}
 }
-void ymnozhenieMatrice(int stroki1, int stolbcy1, int matrice1[100][100],
-	int stroki2, int stolbcy2, int matrice2[100][100],
-	int result[100][100]) {
+void ymnozhenieMatrice(int stroki1, int stolbcy1, int matrice1[MAX_SIZE][MAX_SIZE],
+	int stroki2, int stolbcy2, int matrice2[MAX_SIZE][MAX_SIZE],
+	int result[MAX_SIZE][MAX_SIZE]) {
 	for (int i = 0; i < stroki1; i++) {
 		for (int j = 0; j < stolbcy2; j++) {
 			result[i][j] = 0;
@@ -101,7 +125,7 @@ void ymnozhenieMatrice(int stroki1, int stolbcy1, int matrice1[100][100],
 	}
 }
 
-void ymnozhenieMatriceNaChislo(int stroki, int stolbcy, int matrice[100][100], int chislo, int result[100][100]) {
+void ymnozhenieMatriceNaChislo(int stroki, int stolbcy, int matrice[MAX_SIZE][MAX_SIZE], int chislo, int result[MAX_SIZE][MAX_SIZE]) {
 	for (int i = 0; i < stroki; i++) {
 		for (int j = 0; j < stolbcy; j++) {
 			result[i][j] = matrice[i][j] * chislo;
@@ -110,7 +134,7 @@ void ymnozhenieMatriceNaChislo(int stroki, int stolbcy, int matrice[100][100], i
 }
 
 
-void PlusNumMatrice(int stroki, int stolbcy, int matrice[100][100], int chislo, int result[100][100]) {
+void PlusNumMatrice(int stroki, int stolbcy, int matrice[MAX_SIZE][MAX_SIZE], int chislo, int result[MAX_SIZE][MAX_SIZE]) {
 	for (int i = 0; i < stroki; i++) {
 		for (int j = 0; j < stolbcy; j++) {
 			result[i][j] = matrice[i][j] + chislo;
@@ -118,7 +142,7 @@ void PlusNumMatrice(int stroki, int stolbcy, int matrice[100][100], int chislo, 
 	}
 }
 
-void MinusNumMatrice(int stroki, int stolbcy, int matrice[100][100], int chislo, int result[100][100]) {
+void MinusNumMatrice(int stroki, int stolbcy, int matrice[MAX_SIZE][MAX_SIZE], int chislo, int result[MAX_SIZE][MAX_SIZE]) {
 	for (int i = 0; i < stroki; i++) {
 		for (int j = 0; j < stolbcy; j++) {
 			result[i][j] = matrice[i][j] - chislo;
@@ -126,7 +150,7 @@ void MinusNumMatrice(int stroki, int stolbcy, int matrice[100][100], int chislo,
 	}
 }
 
-void TransponentMatrice(int stroki, int stolbcy, int matrice[100][100], int result[100][100]) {
+void TransponentMatrice(int stroki, int stolbcy, int matrice[MAX_SIZE][MAX_SIZE], int result[MAX_SIZE][MAX_SIZE]) {
 	for (int i = 0; i < stroki; i++) {
 		for (int j = 0; j < stolbcy; j++) {
 			result[j][i] = matrice[i][j];
@@ -134,30 +158,21 @@ void TransponentMatrice(int stroki, int stolbcy, int matrice[100][100], int resu
 	}
 }
 
-int Opredelitel(int n, int matrice[100][100]) {
-	if (n == 1)
+int Opredelitel(int n, int matrice[MAX_SIZE][MAX_SIZE]) {
+	if (n == 1) {
 		return matrice[0][0];
-	int opred = 0;
-	int temp[100][100];
-
-	for (int f = 0; f < n; f++) {
-		int minori = 0;
-		for (int i = 1; i < n; i++) {
-			int minorj = 0;
-			for (int j = 0; j < n; j++) {
-				if (j == f)
-					continue;
-				temp[minori][minorj] = matrice[i][j];
-				minorj++;
-			}
-			minori++;
-		}
-		opred += ((f % 2 == 0) ? 1 : -1) * matrice[0][f] * Opredelitel(n - 1, temp);
 	}
-	return opred;
+	else if (n == 2) {
+		return matrice[0][0] * matrice[1][1] - matrice[0][1] * matrice[1][0];
+	}
+	else if (n == 3) {
+		return matrice[0][0] * (matrice[1][1] * matrice[2][2] - matrice[1][2] * matrice[2][1])
+			- matrice[0][1] * (matrice[1][0] * matrice[2][2] - matrice[1][2] * matrice[2][0])
+			+ matrice[0][2] * (matrice[1][0] * matrice[2][1] - matrice[1][1] * matrice[2][0]);
+	}
 }
 
-void PodMatrice(int n, int matrice[100][100], int podmatrice[100][100], 
+void PodMatrice(int n, int matrice[MAX_SIZE][MAX_SIZE], int podmatrice[MAX_SIZE][MAX_SIZE],
 	int strokaremove, int stolbecremove) {
 	int stroka = 0, stolbec = 0;
 	for (int i = 0; i < n; i++) {
@@ -176,8 +191,8 @@ void PodMatrice(int n, int matrice[100][100], int podmatrice[100][100],
 	}
 }
 
-void MatriceDop(int size, int matrice[100][100], int dop[100][100]) {
-	int podmatrice[100][100];
+void MatriceDop(int size, int matrice[MAX_SIZE][MAX_SIZE], int dop[MAX_SIZE][MAX_SIZE]) {
+	int podmatrice[MAX_SIZE][MAX_SIZE];
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
 			PodMatrice(size, matrice, podmatrice, i, j);
@@ -187,12 +202,12 @@ void MatriceDop(int size, int matrice[100][100], int dop[100][100]) {
 	}
 }
 
-bool ObratMatrice(int n, int matrice1[100][100], double obr[100][100]) {
+bool ObratMatrice(int n, int matrice1[MAX_SIZE][MAX_SIZE], double obr[MAX_SIZE][MAX_SIZE]) {
 		int opredmatrice1 = Opredelitel(n, matrice1);
 		if (opredmatrice1 == 0) {
 			return false;
 		}
-		int dop[100][100];
+		int dop[MAX_SIZE][MAX_SIZE];
 		MatriceDop(n, matrice1, dop);
 
 		for (int i = 0; i < n; i++) {
@@ -221,79 +236,30 @@ bool GetYesOrNo() {
 	}
 }
 void MatriceOperation(int operation) {
-	int matrice1[100][100], matrice2[100][100], result[100][100];
+	int matrice1[MAX_SIZE][MAX_SIZE], matrice2[MAX_SIZE][MAX_SIZE], result[MAX_SIZE][MAX_SIZE];
 	int stroki, stolbcy, chislo;
 
 	switch (operation) {
-	case 3: {  // Умножение матриц
-		int stroki1, stolbcy1, stroki2, stolbcy2;
-
-		do {
-			cout << "Введите значение для строк первой матрицы\n";
-			cin >> stroki1;
-			if (stroki1 <= 0) {
-				cout << "Значение должно быть положительным\n";
-			}
-		} while (stroki1 <= 0);
-		
-		do {
-			cout << "Введите значение для столбцов первой матрицы\n";
-			cin >> stolbcy1;
-			if (stolbcy1 <= 0) {
-				cout << "Значение должно быть положительным\n";
-			}
-		} while (stolbcy1  <= 0);
-
-		do {
-			cout << "Введите значение для строк второй матрицы\n";
-			cin >> stroki2;
-			if (stroki2 <= 0) {
-				cout << "Значение должно быть положительным\n";
-			}
-		} while (stroki2 <= 0);
-
-		do {
-			cout << "Введите значение для столбцов второй матрицы\n";
-			cin >> stolbcy2;
-			if (stolbcy2 <= 0) {
-				cout << "Значение должно быть положительным\n";
-			}
-		} while (stolbcy2 <= 0);
-
-
-		
-		if (stolbcy1 != stroki2) {
-			cout << "Число столбцов первой матрицы должно быть равно числу строк второй.\n";
-			return;
-		}
-		
-
-		// Вводим две матрицы
-		InputTwoMatrice(stroki1, stolbcy1, matrice1, stroki2, stolbcy2, matrice2);
-
-		ymnozhenieMatrice(stroki1, stolbcy1, matrice1, stroki2, stolbcy2, matrice2, result);
-		cout << "Результат умножения:\n";
-		OutputMatrice(stroki1, stolbcy2, result);
-		break;
-	}
-	case 1:  // Сложение матриц
-	case 2:  // Вычитание матриц
+	case 1:  
+	case 2:  
 		do {
 			cout << "Введите количество строк для матрицы: ";
 			cin >> stroki;
-			if (stroki <= 0) {
-				cout << "Значение должно быть положительным\n";
+			if (stroki <= 0 || cin.fail() ) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "Число должно быть положительным\n";
 			}
 		} while (stroki <= 0);
 		do{
 			cout << "Введите количество столбцов для матрицы: ";
 			cin >> stolbcy;
-			if (stolbcy <= 0) {
-				cout << "Значение должно быть положительным\n";
+			if (stolbcy <= 0 || cin.fail() ) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "Число должно быть положительным\n";
 			}
 		} while (stolbcy <= 0);
-
-		// Вводим две матрицы
 		cout << "Введите элементы первой матрицы:\n";
 		InputSingleMatrice(stroki, stolbcy, matrice1);
 		cout << "Введите элементы второй матрицы:\n";
@@ -310,20 +276,80 @@ void MatriceOperation(int operation) {
 
 		OutputMatrice(stroki, stolbcy, result);
 		break;
+	case 3: {  
+		int stroki1, stolbcy1, stroki2, stolbcy2;
 
-	case 4: {  // Умножение матрицы на число
+		do {
+			cout << "Введите значение для строк первой матрицы\n";
+			cin >> stroki1;
+			if (stroki1 <= 0 || cin.fail()) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "Число должно быть положительным\n";
+			}
+		} while (stroki1 <= 0);
+
+		do {
+			cout << "Число значение для столбцов первой матрицы\n";
+			cin >> stolbcy1;
+			if (stolbcy1 <= 0 || cin.fail() ) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "Число должно быть положительным\n";
+			}
+		} while (stolbcy1 <= 0);
+
+		do {
+			cout << "Введите значение для строк второй матрицы\n";
+			cin >> stroki2;
+			if (stroki2 <= 0 || cin.fail() ) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "Число должно быть положительным\n";
+			}
+		} while (stroki2 <= 0 );
+
+		do {
+			cout << "Введите значение для столбцов второй матрицы\n";
+			cin >> stolbcy2;
+			if (stolbcy2 <= 0 || cin.fail() ) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "Число должно быть положительным\n";
+			}
+		} while (stolbcy2 <= 0);
+
+
+
+		if (stolbcy1 != stroki2) {
+			cout << "Число столбцов первой матрицы должно быть равно числу строк второй.\n";
+			return;
+		}
+
+		InputTwoMatrice(stroki1, stolbcy1, matrice1, stroki2, stolbcy2, matrice2);
+
+		ymnozhenieMatrice(stroki1, stolbcy1, matrice1, stroki2, stolbcy2, matrice2, result);
+		cout << "Результат умножения:\n";
+		OutputMatrice(stroki1, stolbcy2, result);
+		break;
+	}
+	case 4: { 
 		do {
 			cout << "Введите количество строк для матрицы: ";
 			cin >> stroki;
-			if (stroki <= 0) {
-				cout << "Значение должно быть положительным\n";
+			if (stroki <= 0 || cin.fail()) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "Число должно быть положительным числом \n";
 			}
 		} while (stroki <= 0);
 		do {
 			cout << "Введите количество столбцов для матрицы: ";
 			cin >> stolbcy;
-			if (stolbcy <= 0) {
-				cout << "Значение должно быть положительным\n";
+			if (stolbcy <= 0 || cin.fail()) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "Значение должно быть положительным числом\n";
 			}
 		} while (stolbcy <= 0);
 		InputMatriceAndNumber(stroki, stolbcy, matrice1, chislo);
@@ -333,19 +359,23 @@ void MatriceOperation(int operation) {
 		break;
 	}
 
-	case 5: { // Сложение матрицы с числом
+	case 5: { 
 		do {
 			cout << "Введите количество строк для матрицы: ";
 			cin >> stroki;
-			if (stroki <= 0) {
-				cout << "Значение должно быть положительным\n";
+			if (stroki <= 0 || cin.fail()) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "Число должно быть положительным числом\n";
 			}
 		} while (stroki <= 0);
 		do {
 			cout << "Введите количество столбцов для матрицы: ";
 			cin >> stolbcy;
-			if (stolbcy <= 0) {
-				cout << "Значение должно быть положительным\n";
+			if (stolbcy <= 0 || cin.fail()) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "Число должно быть положительным числом\n";
 			}
 		} while (stolbcy <= 0);
 		InputMatriceAndNumber(stroki, stolbcy, matrice1, chislo);
@@ -355,19 +385,23 @@ void MatriceOperation(int operation) {
 		break;
 	}
 
-	case 6: {  // Вычитание числа из матрицы
+	case 6: {  
 		do {
 			cout << "Введите количество строк для матрицы: ";
 			cin >> stroki;
-			if (stroki <= 0) {
-				cout << "Значение должно быть положительным\n";
+			if (stroki <= 0 || cin.fail()) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "Число должно быть положительным числом\n";
 			}
 		} while (stroki <= 0);
 		do {
 			cout << "Введите количество столбцов для матрицы: ";
 			cin >> stolbcy;
-			if (stolbcy <= 0) {
-				cout << "Значение должно быть положительным\n";
+			if (stolbcy <= 0 || cin.fail()) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "Число должно быть положительным числом\n";
 			}
 		} while (stolbcy <= 0);
 		InputMatriceAndNumber(stroki, stolbcy, matrice1, chislo);
@@ -377,20 +411,23 @@ void MatriceOperation(int operation) {
 		break;
 	}
 
-	case 7: {  // Транспонирование матрицы
-
+	case 7: {  
 		do {
 			cout << "Введите количество строк для матрицы: ";
 			cin >> stroki;
-			if (stroki <= 0) {
-				cout << "Значение должно быть положительным\n";
+			if (stroki <= 0 || cin.fail()) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "Число должно быть положительным числом\n";
 			}
 		} while (stroki <= 0);
 		do {
 			cout << "Введите количество столбцов для матрицы: ";
 			cin >> stolbcy;
-			if (stolbcy <= 0) {
-				cout << "Значение должно быть положительным\n";
+			if (stolbcy <= 0 || cin.fail()) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "Число должно быть положительным числом\n";
 			}
 		} while (stolbcy <= 0);
 		InputSingleMatrice(stroki, stolbcy, matrice1);
@@ -400,52 +437,64 @@ void MatriceOperation(int operation) {
 		break;
 	}
 
-	case 8: {  // Определитель матрицы
+	case 8: {  
 		do {
 			cout << "Введите количество строк для матрицы: ";
 			cin >> stroki;
-			if (stroki <= 0) {
-				cout << "Значение должно быть положительным\n";
+			if (stroki <= 0 || stroki > 3 || cin.fail() ) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "Введите число от 1 до 3\n";
 			}
-		} while (stroki <= 0);
+		} while (stroki <= 0|| stroki > 3);
 		do {
 			cout << "Введите количество столбцов для матрицы: ";
 			cin >> stolbcy;
-			if (stolbcy <= 0) {
-				cout << "Значение должно быть положительным\n";
+			if (stolbcy <= 0|| stolbcy > 3  || cin.fail()) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "Введите число от 1 до 3\n";
 			}
-		} while (stolbcy <= 0);
-		InputSingleMatrice(stroki, stolbcy, matrice1);
+		} while (stolbcy <= 0 || stroki > 3);
 		if (stroki != stolbcy) {
 			cout << "Определитель может быть вычислен только для квадратной матрицы.\n";
 			return;
 		}
+		InputSingleMatrice(stroki, stolbcy, matrice1);
 		int opred = Opredelitel(stroki, matrice1);
 		cout << "Определитель матрицы равен: " << opred << "\n";
 		break;
 	}
 
-	case 9: {  // Обратная матрица
+	case 9: {
 		do {
 			cout << "Введите количество строк для матрицы: ";
 			cin >> stroki;
-			if (stroki <= 0) {
-				cout << "Значение должно быть положительным\n";
+			if (stroki <= 0 && cin.fail()) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "Число должно быть положительным числом\n";
 			}
 		} while (stroki <= 0);
 		do {
 			cout << "Введите количество столбцов для матрицы: ";
 			cin >> stolbcy;
-			if (stolbcy <= 0) {
-				cout << "Значение должно быть положительным\n";
+			if (stolbcy <= 0 && cin.fail()) {
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "Число должно быть положительным числом\n";
 			}
 		} while (stolbcy <= 0);
+		if (stroki != stolbcy) {
+			cout << "Обратная матрица может быть вычислен только для квадратной матрицы.\n";
+			return;
+		}
 		InputSingleMatrice(stroki, stolbcy, matrice1);
 		if (stroki != stolbcy) {
 			cout << "Обратная матрица возможна только для квадратной матрицы.\n";
 			return;
 		}
-		double obr[100][100];
+		double obr[MAX_SIZE][MAX_SIZE];
 		if (ObratMatrice(stroki, matrice1, obr)) {
 			cout << "Обратная матрица:\n";
 			for (int i = 0; i < stroki; i++) {
@@ -460,14 +509,36 @@ void MatriceOperation(int operation) {
 		}
 		break;
 	}
-	case 0: {  // Выход
-		cout << "Выход из программы.\n";
-		exit(0);  // Завершаем программу
-		break;
-	}
 
 	default:
 		cout << "Неизвестная операция.\n";
 		break;
 	}
+}
+
+int main() {
+	setlocale(LC_ALL, "Russian");
+	bool exit = false;
+
+	int matrice[MAX_SIZE][MAX_SIZE] = { 0 };
+
+	while (!exit) {
+		matriceMenu();
+		int choice = GetChoice();
+
+		if (choice >= 1 && choice <= 9) {
+			do {
+				MatriceOperation(choice);
+			} while (GetYesOrNo());
+		}
+		else if (choice == 0) {
+			exit = true;
+			cout << "Выход из программы\n";
+		}
+		else {
+			cout << "Неправильный ввод\n";
+		}
+	}
+
+	return 0;
 }

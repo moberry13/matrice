@@ -1,4 +1,4 @@
-#include<iostream>
+/*#include<iostream>
 #include"matrice.h"
 #include<locale>
 #include <limits>
@@ -7,6 +7,8 @@
 int main() {
 	setlocale(LC_ALL, "Russian");
 	bool exit = false;
+
+	int matrix[MAX_SIZE][MAX_SIZE] = { 0 };
 
 	while (!exit) {
 		matriceMenu();
@@ -17,7 +19,7 @@ int main() {
 				MatriceOperation(choice);
 			} while (GetYesOrNo());
 		}
-		else if (choice == 10) {
+		else if (choice == 0) {
 			exit = true;
 			cout << "Выход из программы\n";
 		}
@@ -28,3 +30,4 @@ int main() {
 
 	return 0;
 }
+*/
